@@ -1,3 +1,4 @@
+
 using UnityEngine;
 using System;
 using UnityEditor;
@@ -23,10 +24,17 @@ namespace com.amabie.StringDelegator
         /// <returns>Func<T>オブジェクト</returns>
         public static Func<T> ToFunc<T>(this GameObject gameObj, Type classTypeWithNamespace, string methodName)
         {
+            if (classTypeWithNamespace == null) {
+                throw new StringDelegatorException("Argument 1st -- type instance cannot be null");
+            }
             var assembly = classTypeWithNamespace.Assembly;
             Type classType = assembly.GetType(classTypeWithNamespace.ToString());
             var component = gameObj.GetComponent(classType);
             var method = classType.GetMethod(methodName);
+            if (method == null)
+            {
+                throw new StringDelegatorException("Argument 2nd -- string method name cannot be found");
+            }
             return (Func<T>)Delegate.CreateDelegate(typeof(Func<T>), component, method);
         }
 
@@ -39,11 +47,23 @@ namespace com.amabie.StringDelegator
         /// <returns>Actionオブジェクト</returns>
         public static Action ToAction(this GameObject gameObj, Type classTypeWithNamespace, string methodName)
         {
+            if (classTypeWithNamespace == null)
+            {
+                throw new StringDelegatorException("Argument 1st -- type instance cannot be null");
+            }
             var assembly = classTypeWithNamespace.Assembly;
             Type classType = assembly.GetType(classTypeWithNamespace.ToString());
             var component = gameObj.GetComponent(classType);
             var method = classType.GetMethod(methodName);
+            if (method == null)
+            {
+                throw new StringDelegatorException("Argument 2nd -- string method name cannot be found");
+            }
             return (Action)Delegate.CreateDelegate(typeof(Action), component, method);
         }
+    }
+
+    public class StringDelegatorException : Exception {
+        public StringDelegatorException(string message): base(message) { }
     }
 }

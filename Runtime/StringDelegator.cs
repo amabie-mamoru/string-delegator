@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using System;
 using UnityEditor;
@@ -30,6 +29,10 @@ namespace com.amabie.StringDelegator
             var assembly = classTypeWithNamespace.Assembly;
             Type classType = assembly.GetType(classTypeWithNamespace.ToString());
             var component = gameObj.GetComponent(classType);
+            if (component == null)
+            {
+                throw new StringDelegatorException("GameObject does not have class type component");
+            }
             var method = classType.GetMethod(methodName);
             if (method == null)
             {
@@ -43,6 +46,7 @@ namespace com.amabie.StringDelegator
                 throw new StringDelegatorException($"TypeParameter T -- {e.Message}");
             }
         }
+
 
         /// <summary>
         /// 引数に指定したメソッドを Action オブジェクトとして返す
@@ -60,6 +64,10 @@ namespace com.amabie.StringDelegator
             var assembly = classTypeWithNamespace.Assembly;
             Type classType = assembly.GetType(classTypeWithNamespace.ToString());
             var component = gameObj.GetComponent(classType);
+            if (component == null)
+            {
+                throw new StringDelegatorException("GameObject does not have class type component");
+            }
             var method = classType.GetMethod(methodName);
             if (method == null)
             {

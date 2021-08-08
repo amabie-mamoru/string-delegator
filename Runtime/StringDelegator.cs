@@ -35,7 +35,13 @@ namespace com.amabie.StringDelegator
             {
                 throw new StringDelegatorException("Argument 2nd -- string method name cannot be found");
             }
-            return (Func<T>)Delegate.CreateDelegate(typeof(Func<T>), component, method);
+            try
+            {
+                return (Func<T>)Delegate.CreateDelegate(typeof(Func<T>), component, method);
+            }
+            catch (ArgumentException e) {
+                throw new StringDelegatorException($"TypeParameter T -- {e.Message}");
+            }
         }
 
         /// <summary>

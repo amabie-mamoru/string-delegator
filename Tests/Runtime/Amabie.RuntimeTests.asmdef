@@ -1,0 +1,11 @@
+{
+  "name": "Amabie.StringDelegator.Tests",
+  "references": [
+    "Amabie.StringDelegator"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": []
+}
